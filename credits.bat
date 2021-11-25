@@ -28,7 +28,7 @@ echo OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 echo.
 echo.
 pause
-echo KeukeilanTM: https://github.com/jippie13/KeukeilanTM
+echo Keukeiland: https://github.com/jippie13/KeukeilanTM
 echo Apache License 2.0
 echo.
 echo Copyright (c) 2021, Jip van Dalen
