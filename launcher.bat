@@ -1,8 +1,10 @@
 @ECHO off
-setlocal
-if "%1"=="-f" (echo "loading..."&&goto run)
+VERIFY OTHER 2>NUL
+setlocal ENABLEEXTENSIONS
+IF %ERRORLEVEL% == 1 (command extentions not available, please update your cmd.exe)
+if "%1"=="-f" (goto run)
 for /f "tokens=4-5 delims=. " %%i in ('ver') do set VERSION=%%i.%%j
-if "%version%" == "10.0" (echo "loading..."&&goto run) else (goto NOVER)
+if "%version%" == "10.0" (goto run) else (goto NOVER)
 
 :run
 SET mmm=
@@ -60,9 +62,9 @@ echo.
 echo.
 SET /A mmm=%mmm%+1
 IF %mmm%==1 (echo %B% 10         %A%&&echo Loading graphical interface...&&goto x)
-IF %mmm%==2 (echo %B% 20                     %A%&&echo Checking for updates...&&call "%~dp0ckupdate.bat"&&goto x)
-IF %mmm%==3 (echo %B% 30                                 %A%&&echo Setting CodeBase...&&chcp 65001&&goto x)
-IF %mmm%==4 (echo %B% 40                                             %A%&&echo Building config...&&start /b /wait cmd.exe /C "%~dp0setup.bat"&&goto x)
+IF %mmm%==2 (echo %B% 20                     %A%&&echo Setting CodeBase...&&chcp 65001&&goto x)
+IF %mmm%==3 (echo %B% 30                                 %A%&&echo Building config...&&start /b /wait cmd.exe /C "%~dp0setup.bat"&&goto x)
+IF %mmm%==4 (echo %B% 40                                             %A%&&echo Checking for updates...&&call "%~dp0ckupdate.bat" 1.0.0.alpha&&goto x)
 IF %mmm%==5 (echo %B% 50                                                         %A%&&echo Loading libraries...&&goto x)
 IF %mmm%==6 (echo %B% 60                                                                     %A%&&echo Loading libraries...&&goto x)
 IF %mmm%==7 (echo %B% 70                                                                                 %A%&&echo Loading libraries...&&goto x)
@@ -73,7 +75,7 @@ IF %mmm%==11 (echo %B%&&pause&&goto done)
 goto error
 :done
 echo %A%
-START /min cmd.exe /C "%~dp0startup.bat" 
+START /min cmd.exe /C "%~dp0startup.bat" alpha 1.0.0
 call "%~dp0main.bat"
 goto EOF
 :NOVER
