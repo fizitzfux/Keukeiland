@@ -31,7 +31,7 @@ echo     %G% Z - {null} %H%
 echo     %E% 0 - QUIT %H%                                                                                                            %F%
 echo %F%%datime%%B%
 choice /N /C abcdefghijklmnopqrstuvwxyz0
-IF %ERRORLEVEL% == 1 (echo This feature is still in dev!, please try again later.&& GOTO X)
+IF %ERRORLEVEL% == 1 (echo This song is still in dev!, please try again later.&& GOTO X)
 IF %ERRORLEVEL% == 2 (GOTO X)
 IF %ERRORLEVEL% == 3 (GOTO X)
 IF %ERRORLEVEL% == 4 (GOTO X)

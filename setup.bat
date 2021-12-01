@@ -28,4 +28,6 @@ echo cmdline = "#CBFFDE">>"%~dp0config\.config\spotify.toml"
 echo cmdline_bg = "#444444">>"%~dp0config\.config\spotify.toml"
 )
 :4
-if count GTR 0 (echo config successfully build.) else (config already build.)
+if exist "%~dp0config\user.ini" (goto 5)  else (echo No user has been set up&& set /P username="Please enter your username "&& echo %username%>>"%~dp0config\user.ini" && set /A count=%count%+1)
+:5
+if %count% GTR 0 (echo config successfully build.) else (echo config already build.)

@@ -3,6 +3,7 @@
 date /T>"%~dp0temp\date.var"&& time /T>"%~dp0temp\time.var"
 SET /P date=<"%~dp0temp\date.var" && SET /P time=<"%~dp0temp\time.var"
 SET datime=%date%%time%
+SET /P username=<"%~dp0config\user.ini"
 :X
 echo %H%
 echo.
@@ -33,7 +34,7 @@ echo.
 echo.
 echo.
 echo                                                                                                                 %A%A%B%B%C%C%D%D%E%E%F%F%G%G%H%%AA%H%HA%%F%
-echo %datime%%B%
+echo %datime% -- %username% -- %version%%B%
 choice /C 1234567890rc /N /T 30 /D r
 IF %ERRORLEVEL% == 1 (call "%~dp0musicplayer.bat"&& GOTO Y)
 IF %ERRORLEVEL% == 2 (call "%~dp0spotify.bat"&& GOTO Y)

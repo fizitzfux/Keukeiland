@@ -3,8 +3,8 @@ VERIFY OTHER 2>NUL
 setlocal ENABLEEXTENSIONS
 IF %ERRORLEVEL% == 1 (command extentions not available, please update your cmd.exe)
 if "%1"=="-f" (goto run)
-for /f "tokens=4-5 delims=. " %%i in ('ver') do set VERSION=%%i.%%j
-if "%version%" == "10.0" (goto run) else (goto NOVER)
+for /f "tokens=4-5 delims=. " %%i in ('ver') do set winver=%%i.%%j
+if "%winver%" == "10.0" (goto run) else (goto NOVER)
 
 :run
 SET mmm=
@@ -25,6 +25,7 @@ SET EA=%ESC%[34m
 SET FA=%ESC%[35m
 SET GA=%ESC%[36m
 SET HA=%ESC%[37m
+SET version=1.0.0.alpha
 title Keukeiland
 GOTO y
 :x
@@ -75,7 +76,7 @@ IF %mmm%==11 (echo %B%&&pause&&goto done)
 goto error
 :done
 echo %A%
-START /min cmd.exe /C "%~dp0startup.bat" alpha 1.0.0
+START /min cmd.exe /C "%~dp0startup.bat"
 call "%~dp0main.bat"
 goto EOF
 :NOVER
