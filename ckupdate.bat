@@ -1,7 +1,8 @@
 @ECHO off
-ping lettuce.ddns.net -n 1 -l 1 -w 750>NUL
+ping lettuce.ddns.net -n 1 -w 750 >NUL
 IF %ERRORLEVEL% GTR 0 (goto con_error)
 start /min /wait powershell.exe -command "Invoke-WebRequest "http://lettuce.ddns.net:81/updateservice/latest.version" -OutFile '%~dp0temp\updt.version'"
+IF %ERRORLEVEL% GTR 0 (goto con_error)
 SET /P latest_version=<"%~dp0temp\updt.version"
 IF "%1" == "%latest_version%" (echo You are running the latest version.&&goto EOF)
 choice /C yn /T 10 /D n /M "update found, do you want to update?"
