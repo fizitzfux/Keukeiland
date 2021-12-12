@@ -27,6 +27,7 @@ echo OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE U
 echo OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 echo.
 echo.
+echo.
 pause
 echo Keukeiland: https://github.com/jippie13/Keukeiland
 echo Apache License 2.0
@@ -58,4 +59,33 @@ echo.
 echo.
 echo.
 pause
-:1
+echo Webbrowser: https://github.com/aaronsw/html2text and https://github.com/pyinstaller/pyinstaller
+echo GNU gpl 3.0 AND Apache-2.0 licenses
+echo.
+echo  html2text.py Copyright (C) 2011  aaronsw
+echo    This program comes with ABSOLUTELY NO WARRANTY.
+echo    This is free software, and you are welcome to redistribute it
+echo    under certain conditions.
+echo full license: https://www.gnu.org/licenses/gpl-3.0.en.html
+echo.
+echo #-----------------------------------------------------------------------------
+echo # Copyright (c) 2005-2021, PyInstaller Development Team.
+echo #
+echo # Licensed under the Apache License, Version 2.0 (the "License");
+echo # you may not use this file except in compliance with the License.
+echo #
+echo # The full license is available at https://www.apache.org/licenses/LICENSE-2.0 .
+echo #
+echo # SPDX-License-Identifier: Apache-2.0
+echo #-----------------------------------------------------------------------------
+echo.
+echo.
+echo.
+echo.
+echo.
+echo.
+echo.
+echo.
+echo.
+echo.
+pause

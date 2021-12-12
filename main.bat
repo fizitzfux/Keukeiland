@@ -7,26 +7,26 @@ SET /P username=<"%~dp0config\user.ini"
 :X
 echo %H%
 echo.
-echo      %G%                %H%     %A%                %H%
-echo      %G% %E%     %G%          %H%     %A%                %H%
-echo      %G% %E%        %G%       %H%     %A%                %H%
-echo      %G% %E%           %G%    %H%     %A%                %H%
-echo      %G% %E%              %G% %H%     %A%                %H%
-echo      %G% %E%           %G%    %H%     %A%                %H%
-echo      %G% %E%        %G%       %H%     %A%   %C% %A%   %C%  %A%   %C% %A%   %H%
-echo      %G% %E%     %G%          %H%     %A%     %C% %A%    %C% %A%     %H%
-echo      %G%%AA%1 music player%HA%  %H%     %A%%HA%2 spotify%HA%       %H%
+echo      %A%                %H%     %A%                %H%     %A%                %H%
+echo      %A% %G%     %A%          %H%     %A%                %H%     %A%    %F%        %A%    %H%
+echo      %A% %G%        %A%       %H%     %A%    %C%        %A%    %H%     %A%  %F%  %A%        %F%  %A%  %H%
+echo      %A% %G%           %A%    %H%     %A%   %C% %A%        %C% %A%   %H%     %A% %F% %A%   %BA%BROWSE   %F% %A% %H%
+echo      %A% %G%              %A% %H%     %A%  %C% %A%  %C%      %A%  %C% %A%  %H%     %A% %F% %A%    %FA%THE     %F% %A% %H%
+echo      %A% %G%           %A%    %H%     %A% %C% %A%  %C% %A%      %C% %A%  %C% %A% %H%     %A% %F% %A%  %DA%INTERNET  %F% %A% %H%
+echo      %A% %G%        %A%       %H%     %A%   %C% %A%  %C%    %A%  %C% %A%   %H%     %A%  %F%  %A%        %F%  %A%  %H%
+echo      %A% %G%     %A%          %H%     %A%     %C% %A%    %C% %A%     %H%     %A%    %F%        %A%    %H%
+echo      %A%%HA%1 music player%HA%  %H%     %A%%HA%2 spotify%HA%       %H%     %A%%HA%3 webbrowser%HA%    %H%
 echo.
 echo.
-echo                                                                                         %G%                %H%
-echo                                                                                         %G%       %E%  %G%       %H%
-echo                                                                                         %G%  %E%   %G%  %E%  %G%  %E%   %G%  %H%
-echo                                                                                         %G% %E%   %G%   %E%  %G%   %E%   %G% %H%
-echo                                                                                         %G% %E%  %G%    %E%  %G%    %E%  %G% %H%
-echo                                                                                         %G% %E%  %G%    %E%  %G%    %E%  %G% %H%
-echo                                                                                         %G% %E%   %G%        %E%   %G% %H%
-echo                                                                                         %G%  %E%            %G%  %H%
-echo                                                                                         %G%%AA%0 exit%HA%          %H%
+echo                                                                                         %A%                %H%
+echo                                                                                         %A%       %B%  %A%       %H%
+echo                                                                                         %A%  %B%   %A%  %B%  %A%  %B%   %A%  %H%
+echo                                                                                         %A% %B%   %A%   %B%  %A%   %B%   %A% %H%
+echo                                                                                         %A% %B%  %A%    %B%  %A%    %B%  %A% %H%
+echo                                                                                         %A% %B%  %A%    %B%  %A%    %B%  %A% %H%
+echo                                                                                         %A% %B%   %A%        %B%   %A% %H%
+echo                                                                                         %A%  %B%            %A%  %H%
+echo                                                                                         %A%%HA%0 exit%HA%          %H%
 echo.
 echo.
 echo.
@@ -38,7 +38,7 @@ echo %datime% -- %username% -- %version%%B%
 choice /C 1234567890rc /N /T 30 /D r
 IF %ERRORLEVEL% == 1 (call "%~dp0musicplayer.bat"&& GOTO Y)
 IF %ERRORLEVEL% == 2 (call "%~dp0spotify.bat"&& GOTO Y)
-IF %ERRORLEVEL% == 3 (call "%~dp0.bat"&& GOTO Y)
+IF %ERRORLEVEL% == 3 (call "%~dp0webbrowser.bat"&& GOTO Y)
 IF %ERRORLEVEL% == 4 (call "%~dp0.bat"&& GOTO Y)
 IF %ERRORLEVEL% == 5 (call "%~dp0.bat"&& GOTO Y)
 IF %ERRORLEVEL% == 6 (call "%~dp0.bat"&& GOTO Y)

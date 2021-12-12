@@ -1,13 +1,13 @@
 @ECHO off
 VERIFY OTHER 2>NUL
-setlocal ENABLEEXTENSIONS
+setlocal ENABLEEXTENSIONS ENABLEDELAYEDEXPANSION
 IF %ERRORLEVEL% == 1 (command extentions not available, please update your cmd.exe)
 if "%1"=="-f" (goto run)
-for /f "tokens=4-5 delims=. " %%i in ('ver') do set winver=%%i.%%j
-if "%winver%" == "10.0" (goto run) else (goto NOVER)
+for /f "tokens=4-5 delims=. " %%i in ('ver') do set osver=%%i.%%j
+if "%osver%" == "10.0" (goto run) else (goto NOVER)
 
 :run
-SET mmm=
+SET "mmm="
 SET ESC=
 SET A=%ESC%[40m
 SET B=%ESC%[41m
