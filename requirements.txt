@@ -8,7 +8,7 @@ idna==3.3
 Js2Py==0.71
 packaging==21.3
 pefile==2021.9.3
-pyinstaller==4.7
+pyinstaller==4.8
 pyinstaller-hooks-contrib==2021.4
 pyjsparser==2.7.1
 pyparsing==3.0.6
