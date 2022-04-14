@@ -8,6 +8,7 @@ def debug():
     print('At this moment this feature is still in dev')
 
 def create(version):
+    data.delete('keukeiland.cfg')
     def intro(page = '0'):
         window.topBar('Config Setup ' + page + '/4')
         print('Thank you for installing Keukeiland version: ' + version)
