@@ -3,17 +3,15 @@ import os
 #import local modules
 import data
 import config
-import window
+import screen
 import getkey
 #set global variables
 version = 'a2.1.0'
 
-def left_corner():
-    print(u'\u001b[9999A \u001b[9999D \u001b[1B \u001b[1C', end='')
-
 #function for exiting the script
 def exit_program():
-    window.topBar()
+    win.unload()
+    win.topBar()
     print('Press any key to quit.')
     while True:
         if getkey.key_pressed():
@@ -48,6 +46,15 @@ if data.read('keukeiland.cfg', 'version') != version:
     if not config.create(version):
         exit_program()
 
-window.menu()
+
+win = screen.Window()
+win.theme = ("\u001b[48;5;169m",)
+win.info = {"name":"Keukeiland " + version,"user":"Jeep","page":"Menu"}
+win.clear()
+win.topbar()
+win.refresh()
+# win.unload("topbar")
+# win.refresh()
+#window.menu()
 
 exit_program()

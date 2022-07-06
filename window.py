@@ -50,3 +50,4 @@ def topBar(page = None):
 
 def menu():
     topBar('Main Menu')
+    
