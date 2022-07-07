@@ -8,53 +8,31 @@ import getkey
 #set global variables
 version = 'a2.1.0'
 
-#function for exiting the script
+#function for exiting the program
 def exit_program():
     win.unload()
-    win.topBar()
-    print('Press any key to quit.')
-    while True:
-        if getkey.key_pressed():
-            window.clear()
-            print('Done.')
-            exit()
-
-#check if the os is windows, if so enable VT100
-if os.name in('nt', 'dos'):os.system('color')
-
-#to be replaced with a welcome-screen
-"""
-#display an rainbow loading thingy
-while True:
-    print ("Loading all 256 colors...")
-    for i in range(0, 16):
-        for j in range(0, 16):
-            code = str(i * 16 + j + 1)
-            color = u"\u001b[38;5;" + code + "m" + code.ljust(4)
-            sleep(0.0025)
-            stdout.write(u"\u001b[1000D" + color + "/256")
-            stdout.flush()
-    print()
-
-#check if ESC is pressed, if so open setup-screen
-    if getkey.key_pressed("\x1b"):
-        config.debug()
-        break
-    break"""
+    win.refresh()
+    win.info["page"] = "Exit"
+    win.infobar()
+    win.refresh()
+    win.alert("Quitting...",1)
+    win.clear()
+    print('Done.')
+    exit()
 
 if data.read('keukeiland.cfg', 'version') != version:
     if not config.create(version):
         exit_program()
 
+username = data.read("keukeiland.cfg", "username")
 
 win = screen.Window()
-win.theme = ("\u001b[48;5;169m",)
-win.info = {"name":"Keukeiland " + version,"user":"Jeep","page":"Menu"}
-win.clear()
-win.topbar()
+win.theme.update({"theme_0":"\u001b[48;5;169m","theme_1":"\u001b[48;5;1m","background_0":"\u001b[48;5;6m"})
+win.info = {"name":"Keukeiland " + version,"user":username,"page":"Menu"}
+win.infobar()
 win.refresh()
 # win.unload("topbar")
 # win.refresh()
-#window.menu()
+getkey.wait_key()
 
 exit_program()
