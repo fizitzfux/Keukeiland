@@ -6,33 +6,38 @@ import config
 import screen
 import getkey
 #set global variables
-version = 'a2.1.0'
+version = "a2.1.0"
 
 #function for exiting the program
 def exit_program():
     win.unload()
-    win.refresh()
     win.info["page"] = "Exit"
     win.infobar()
     win.refresh()
     win.alert("Quitting...",1)
     win.clear()
-    print('Done.')
     exit()
 
-if data.read('keukeiland.cfg', 'version') != version:
+if data.read("keukeiland.cfg", "version") != version:
     if not config.create(version):
         exit_program()
 
 username = data.read("keukeiland.cfg", "username")
+theme_location = data.read("keukeiland.cfg", "theme")
+if str(type(theme_location)) != "<class 'dict'>":
+    theme = data.read(theme_location, dict = True)
+else:
+    theme = theme_location
 
 win = screen.Window()
-win.theme.update({"theme_0":"\u001b[48;5;169m","theme_1":"\u001b[48;5;1m","background_0":"\u001b[48;5;6m"})
+win.theme.update(theme)
 win.info = {"name":"Keukeiland " + version,"user":username,"page":"Menu"}
-win.infobar()
+win.infobar(offset=-2,spacer="69 =",elementName="infobar#695")
+win.infobar(content="",offset=5)
 win.refresh()
-# win.unload("topbar")
-# win.refresh()
+getkey.wait_key()
+win.unload("infobar#695")
+win.refresh()
 getkey.wait_key()
 
 exit_program()

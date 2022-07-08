@@ -1,12 +1,17 @@
+#version 1.0.0
+#https://github.com/jippie13/Keukeiland
+
 try: import os # needed for reliable rendering of terminal, external
 except: _os_module_imported = False
 else: _os_module_imported = True
 
-try:
-    from time import sleep # only needed when using alert with timeout, external
-    from getkey import wait_key # only needed when using interactive elements, local
-except:
-    print()
+try: from time import sleep # only needed when using alert with timeout, external
+except: _time_module_imported = False
+else: _time_module_imported = True
+
+try: from getkey import wait_key # only needed when using interactive elements, local
+except: _getkey_module_imported = False
+else: _getkey_module_imported = True
 
 class Window:
     def __init__(self):
@@ -24,9 +29,10 @@ class Window:
 
         self.theme = {"theme_0":"\u001b[7m","theme_1":"","background_0":"","selected":"\u001b[7m","clear":"\u001b[0m"}
         self.info = {"name":"keukeiland DEMO",}
-        self._active = []
+        self._active = {}
 
         self.clear()
+
 
     def clear(self):
         if _os_module_imported:
@@ -35,41 +41,79 @@ class Window:
             print("\033[2J")
         self._align()
 
+
     def _align(self, x=0, y=0, align="top-left"):
         if align == "top-left":
+
             if x == 0 and y == 0:
                 print("\u001b[9999A\u001b[9999D",end="")
-            elif x > 0 and y > 0:
-                print("\u001b[9999A\u001b[9999D",end="")
-                print("\u001b[" + str(x) + "C\u001b[" + str(y) + "B",end="")
-            elif y < 0 and x >= 0:
-                return "\u001b[9999A\u001b[9999D\u001b[" + str(x) + "C\u001b[" + str(self.height + y + 1) + "B"
-            elif y >= 0 and x < 0:
-                return "\u001b[9999A\u001b[9999D\u001b[" + str(self.width + x) + "C\u001b[" + str(y) + "B"
-            else:
-                return "\u001b[9999A\u001b[9999D\u001b[" + str(self.width + x) + "C\u001b[" + str(self.height + y + 1) + "B"
+
+            elif x != 0 and y == 0:
+                if x > 0:
+                    print("\u001b[9999A\u001b[9999D",end="")
+                    print("\u001b[" + str(x) + "C",end="")
+                elif x < 0:
+                    print("\u001b[9999A\u001b[9999D",end="")
+                    print("\u001b[" + str(self.width + x) + "C",end="")
+
+            elif x == 0 and y != 0:
+                if y > 0:
+                    print("\u001b[9999A\u001b[9999D",end="")
+                    print("\u001b[" + str(y) + "B",end="")
+                elif y < 0:
+                    print("\u001b[9999A\u001b[9999D",end="")
+                    print("\u001b[" + str(self.height + y) + "B",end="")
+
+            elif x > 0 and y != 0:
+                if y > 0:
+                    print("\u001b[9999A\u001b[9999D",end="")
+                    print("\u001b[" + str(x) + "C\u001b[" + str(y) + "B",end="")
+                elif y < 0:
+                    print("\u001b[9999A\u001b[9999D",end="")
+                    print("\u001b[" + str(x) + "C\u001b[" + str(self.height + y) + "B",end="")
+
+            elif x < 0 and y != 0:
+                if y > 0:
+                    print("\u001b[9999A\u001b[9999D",end="")
+                    print("\u001b[" + str(self.width + x) + "C\u001b[" + str(y) + "B")
+                elif y < 0:
+                    print("\u001b[9999A\u001b[9999D",end="")
+                    print("\u001b[" + str(self.width + x) + "C\u001b[" + str(self.height + y) + "B")
+
         elif align == "center":
             print("\u001b[9999A\u001b[9999D",end="")
             print("\u001b[" + str(int(self.width / 2 + x)) + "C\u001b[" + str(int(self.height / 2 + y)) + "B",end="")
 
+
     def refresh(self):
         self.clear()
-        for i in range(self.height+1):
+        for i in range(self.height):
             print(self.theme["background_0"] + " "*self.width + "\u001b[0m",end="")
         self._align()
-        for i in range(len(self._active)):
-            foo = getattr(self, self._active[i])
-            foo()
+        for x in self._active:
+            foo = getattr(self, x.strip("#1234567890"))
+            if len(self._active[x]) == 0:
+                foo()
+            elif len(self._active[x]) == 1:
+                foo(self._active[i][0])
+            elif len(self._active[x]) == 2:
+                foo(self._active[i][0],self._active[i][1])
+            elif len(self._active[x]) == 3:
+                foo(self._active[x][0],self._active[x][1],self._active[x][2])
+            elif len(self._active[x]) == 4:
+                foo(self._active[x][0],self._active[x][1],self._active[x][2],self._active[x][3])
         print("")
+
 
     def unload(self, toRemove=""):
         if toRemove == "":
             self._active.clear()
         else:
-            self._active.remove(toRemove)
+            self._active.pop(toRemove)
+
 
     def infobar(self, content="", spacer=" - ", offset=0, elementName="infobar"):
-        self._active.append(elementName)
+        self._active[elementName] = (content,spacer,offset,elementName)
         self._align(0,offset)
         if content == "":
             for x in self.info:
@@ -77,6 +121,7 @@ class Window:
             print(self.theme["theme_0"] + content[len(spacer):].center(self.width) + self.theme["clear"],end="")
         else:
             print(self.theme["theme_0"] + content.center(self.width) + self.theme["clear"],end="")
+
 
     def alert(self, message, option_1="OK", option_2="", option_3="", selected=1):
         self._align(int(-len(message)/2-2),-3,"center")

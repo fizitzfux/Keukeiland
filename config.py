@@ -13,7 +13,7 @@ def create(version):
         window.topBar('Config Setup ' + page + '/4')
         print('Thank you for installing Keukeiland version: ' + version)
         print('Please answer the following questions.\n')
-    
+
     def name():
         intro('1')
         username = input('Enter a username [max 8 chars]: ')
@@ -30,7 +30,7 @@ def create(version):
                 if getkey.wait_key():
                     return False
         return True
-    
+
     def background():
         intro('2')
         print('Enter your favorite background color')
@@ -44,7 +44,7 @@ def create(version):
         backcolor = input(':')
         try:
             int(backcolor)
-            if not data.append('keukeiland.cfg', 'backcolor', backcolor):
+            if not data.append('theme.cfg', 'theme_0', "\u001b[48;5;" + str(backcolor) + "m"):
                 window.topBar('ERROR')
                 print('An error occurred when trying to store your config.')
                 if getkey.wait_key():
@@ -57,17 +57,17 @@ def create(version):
 
     if not name():
         return False
-    
+
     if not background():
         return False
-    
+
     print(version)
     if not data.append('keukeiland.cfg', 'version', version):
         window.topBar('ERROR')
         print('An error occurred when trying to store your config.')
         if getkey.wait_key():
             return False
-            
+
     window.topBar('Config Setup')
     print('Your config has been saved.\n')
     print('Press any key to continue')

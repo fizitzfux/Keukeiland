@@ -7,7 +7,7 @@ DEPENDENCIES: optional: ast.literal_eval()
 WARNING: when literal_eval from the ast library is unavailable, untrusted code can be run from file!
 read(<file>) will return True if file exists and can be read
 read(<file>,<key>) will return the value of the key in the file
-read(<file>,fullDict = True) will return the contents of the file as a dictionary
+read(<file>,dict = True) will return the contents of the file as a dictionary
 read(<file>,literal = True) will return the full contents of the file
 """
 def read(file, key = None, literal = False, dict = False):
@@ -17,7 +17,7 @@ def read(file, key = None, literal = False, dict = False):
         return False
     else:
         content = fileHandle.read()
-        
+
         if literal == True:
             fileHandle.close()
             return content
