@@ -1,4 +1,4 @@
-#version 1.0.0
+#version 1.0.1
 #https://github.com/jippie13/Keukeiland
 
 try: import os # needed for reliable rendering of terminal, external
@@ -16,18 +16,25 @@ else: _getkey_module_imported = True
 class Window:
     def __init__(self):
         if _os_module_imported:
-            self._os_module_imported = True
             terminalSize = os.get_terminal_size()
             self.height = terminalSize.lines
             self.width = terminalSize.columns
-            if os.name in('nt', 'dos'):os.system('color')
-            if os.name in ('nt', 'dos'): self._clear = 'cls'
-            else: self._clear = 'clear'
+            if os.name in('nt', 'dos'):
+                os.system('color')
+                self._clear = 'cls'
+            else:
+                self._clear = 'clear'
         else:
-            self.height = 20
-            self.width = 40
+            self.height = 24
+            self.width = 80
 
-        self.theme = {"theme_0":"\u001b[7m","theme_1":"","background_0":"","selected":"\u001b[7m","clear":"\u001b[0m"}
+        self.theme = {
+        "theme_0":      "\u001b[7m",
+        "theme_1":      "",
+        "background_0": "",
+        "selected":     "\u001b[7m",
+        "clear":        "\u001b[0m"
+        }
         self.info = {"name":"keukeiland DEMO",}
         self._active = {}
 
@@ -87,21 +94,17 @@ class Window:
 
     def refresh(self):
         self.clear()
+
         for i in range(self.height):
             print(self.theme["background_0"] + " "*self.width + "\u001b[0m",end="")
         self._align()
+
         for x in self._active:
-            foo = getattr(self, x.strip("#1234567890"))
-            if len(self._active[x]) == 0:
-                foo()
-            elif len(self._active[x]) == 1:
-                foo(self._active[i][0])
-            elif len(self._active[x]) == 2:
-                foo(self._active[i][0],self._active[i][1])
-            elif len(self._active[x]) == 3:
-                foo(self._active[x][0],self._active[x][1],self._active[x][2])
-            elif len(self._active[x]) == 4:
-                foo(self._active[x][0],self._active[x][1],self._active[x][2],self._active[x][3])
+            func = getattr(self, x.strip("#1234567890"))
+            args = "self._active[x][{}],"*len(self._active[x])
+            args = args.format(*[str(i) for i in range(0,len(self._active[x]))])
+            func(*eval(args))
+
         print("")
 
 
