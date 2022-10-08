@@ -115,6 +115,10 @@ class Window:
             self._active.pop(toRemove)
 
 
+    def notification_alert(self):
+        self._align()
+        print("\u001b\a")
+
     def infobar(self, content="", spacer=" - ", offset=0, elementName="infobar"):
         self._active[elementName] = (content,spacer,offset,elementName)
         self._align(0,offset)
@@ -127,6 +131,7 @@ class Window:
 
 
     def alert(self, message, option_1="OK", option_2="", option_3="", selected=1):
+        self.notification_alert()
         self._align(int(-len(message)/2-2),-3,"center")
         print(self.theme["theme_1"] + "="*(len(message)+4))
         self._align(int(-len(message)/2-2),-2,"center")
