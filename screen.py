@@ -15,6 +15,7 @@ else: _getkey_module_imported = True
 
 class Window:
     def __init__(self):
+        # fetch general information like terminal size and os using os module
         if _os_module_imported:
             terminalSize = os.get_terminal_size()
             self.height = terminalSize.lines
@@ -24,10 +25,11 @@ class Window:
                 self._clear = 'cls'
             else:
                 self._clear = 'clear'
-        else:
+        else: # if os module unavailable, use fallback values for terminal size
             self.height = 24
             self.width = 80
 
+        # set a fallback theme and program info just in case it isn't provided
         self.theme = {
         "theme_0":      "\u001b[7m",
         "theme_1":      "",
@@ -36,11 +38,17 @@ class Window:
         "clear":        "\u001b[0m"
         }
         self.info = {"name":"keukeiland DEMO",}
+        # make an empty dictionary for storing the active elements
         self._active = {}
-
+        # make sure that the screen is empty before rendering anything
         self.clear()
 
-
+    """ clear() info
+    GLOBAL: clears Window
+    DEPENDENCIES: self._align(), optional: os.system()
+    WARNING: if os.system() is unavailable ANSI escape codes are used, these are unreliable and should be avoided
+    no user passable args
+    """
     def clear(self):
         if _os_module_imported:
             os.system(self._clear)
@@ -48,7 +56,15 @@ class Window:
             print("\033[2J")
         self._align()
 
-
+    """ _align() info
+    GLOBAL: used to align terminal cursor to certain coördinates
+    DEPENDENCIES: -
+    WARNING: internal function, use outside of this class could break things
+    _align() move cursor to 0,0
+    _align(x=<x-offset>,y=<y-offset>,align="top-left") default, move cursor to offset from top-left corner
+    _align(x=<x-offset>,y=<y-offset>,align="center") move cursor to offset from width and height center
+    _align(x=<x-offset>,y=<y-offset>,align="center-left") move cursor to offset from left side of vertical center
+    """
     def _align(self, x=0, y=0, align="top-left"):
         if align == "top-left":
 
@@ -95,7 +111,12 @@ class Window:
             print("\u001b[9999A\u001b[9999D",end="")
             print("\u001b[" + str(x-1) + "C\u001b[" + str(int(self.height / 2 + y)) + "B",end="")
 
-
+    """ refresh() info
+    GLOBAL: clears screen and then re-renders all static elements one by one
+    DEPENDENCIES: self.clear(), self._align()
+    WARNING: refreshing whilst dynamic elements, like alert() and wait(), are loaded could break things
+    no user passable args
+    """
     def refresh(self):
         self.clear()
 
@@ -111,18 +132,35 @@ class Window:
 
         print("")
 
-
+    """ unload() info
+    GLOBAL: removes elements from active list, unloads them from rendering
+    DEPENDENCIES: -
+    WARNING: it is strongly advised to trigger refresh() after unloading elements
+    unload() default, unloads all active elements
+    unload(<elementName>) unloads a specific element by it's given tag
+    """
     def unload(self, toRemove=""):
         if toRemove == "":
             self._active.clear()
         else:
             self._active.pop(toRemove)
 
-
+    """ notification_alert() info
+    GLOBAL: triggers BELL function of terminal to alert user
+    DEPENDENCIES: self._align()
+    WARNING: this feature uses ANSI escape codes and therefore the result may differ per implementation
+    no user passable args
+    """
     def notification_alert(self):
         self._align()
         print("\u001b\a")
 
+    """ wait() info
+    GLOBAL: pauses interaction until user presses any key
+    DEPENDENCIES: self._align(), time.sleep()
+    WARNING: refreshing whilst this function is active could break things
+    wait(theme_color=<state_0 color>,theme_color2=<state_1 color>,offsetx=<x-offset>,offsety=<y-offset>,location=<alignment using _align()>,text=<prompt text>)
+    """
     def wait(self,theme_color="selected",theme_color2="background_0",offsetx=0,offsety=0,location="top-left",text="Press any key to continue..."):
         while True:
             self._align(offsetx-(len(text)/2),offsety,location)
@@ -139,6 +177,11 @@ class Window:
                 if key_pressed():
                     return
 
+    """ infobar() info
+    GLOBAL: renders horizontal bar with information
+    DEPENDENCIES: self._align()
+    infobar(content=<display text>,spacer=<string>,offset=<y-offset>,location=<center/>,elementName="infobar" + <tag>)
+    """
     def infobar(self, content="", spacer=" - ", offset=0, location="", elementName="infobar"):
         self._active[elementName] = (content,spacer,offset,location,elementName)
         if location == "center":
@@ -152,7 +195,13 @@ class Window:
         else:
             print(self.theme["theme_0"] + content.center(self.width) + self.theme["clear"],end="")
 
-
+    """ alert() info
+    GLOBAL: displays multiple choice alert, triggers BELL and pauses other content
+    DEPENDENCIES: self.notification_alert(), self._align(), getkey.wait_key(), optional: os.sleep()
+    WARNING: refreshing whilst active could break things, without os.sleep() timeout function doesn't work
+    alert(<message>,<timeout>) displays <message> for duration of <timeout>
+    alert(<message>,<option 1>,<option 2>,<option 3>,<default option>) displays <message> with <option 1-3> given as choices
+    """
     def alert(self, message, option_1="OK", option_2="", option_3="", selected=1):
         self.notification_alert()
         self._align(int(-len(message)/2-2),-3,"center")
