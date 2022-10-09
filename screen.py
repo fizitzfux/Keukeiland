@@ -5,11 +5,11 @@ try: import os # needed for reliable rendering of terminal, external
 except: _os_module_imported = False
 else: _os_module_imported = True
 
-try: from time import sleep # only needed when using alert with timeout, external
+try: from time import sleep # only needed when using alert with timeout or wait, external
 except: _time_module_imported = False
 else: _time_module_imported = True
 
-try: from getkey import wait_key # only needed when using interactive elements, local
+try: from getkey import wait_key,key_pressed # only needed when using interactive elements, local
 except: _getkey_module_imported = False
 else: _getkey_module_imported = True
 
@@ -91,6 +91,10 @@ class Window:
             print("\u001b[9999A\u001b[9999D",end="")
             print("\u001b[" + str(int(self.width / 2 + x)) + "C\u001b[" + str(int(self.height / 2 + y)) + "B",end="")
 
+        elif align == "center-left":
+            print("\u001b[9999A\u001b[9999D",end="")
+            print("\u001b[" + str(x-1) + "C\u001b[" + str(int(self.height / 2 + y)) + "B",end="")
+
 
     def refresh(self):
         self.clear()
@@ -119,9 +123,28 @@ class Window:
         self._align()
         print("\u001b\a")
 
-    def infobar(self, content="", spacer=" - ", offset=0, elementName="infobar"):
-        self._active[elementName] = (content,spacer,offset,elementName)
-        self._align(0,offset)
+    def wait(self,theme_color="selected",theme_color2="background_0",offsetx=0,offsety=0,location="top-left",text="Press any key to continue..."):
+        while True:
+            self._align(offsetx-(len(text)/2),offsety,location)
+            print(self.theme[theme_color] + text + self.theme["clear"])
+            for i in range(0,10):
+                sleep(0.1)
+                if key_pressed():
+                    return
+
+            self._align(offsetx-(len(text)/2),offsety,location)
+            print(self.theme[theme_color2] + text + self.theme["clear"])
+            for i in range (0,10):
+                sleep(0.1)
+                if key_pressed():
+                    return
+
+    def infobar(self, content="", spacer=" - ", offset=0, location="", elementName="infobar"):
+        self._active[elementName] = (content,spacer,offset,location,elementName)
+        if location == "center":
+            self._align(0,offset,"center-left")
+        else:
+            self._align(0,offset)
         if content == "":
             for x in self.info:
                 content = content + spacer + self.info[x]
