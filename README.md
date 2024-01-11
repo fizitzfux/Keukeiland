@@ -1,7 +1,8 @@
-# Keukeiland
-there is currently nothing here.
-I am working on porting the whole app to python.
+# DISCONTINUED
+This project has been discontinued. For last changes go to the `indev`-branch.
 
-Please have patience and check back later :)
+Because of the discontinuation I hereby assign all source code in this repo owned by me to the public domain.
 
--Jeep / jippie13
+NOTE: This does not include the name 'Keukeiland' written in any case type. Please replace the name with something else when copying any of the code.
+
+~Fizitzfux
